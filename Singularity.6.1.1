@@ -1,0 +1,84 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%labels
+Maintainer Matthew Flister
+Version v18.03
+
+%help
+This container runs Tensorflow-GPU.
+
+%environment
+    # nvidia driver libs specific cuda version libs are mounted by --bind command at run
+    # required for GPU enabled container
+    SHELL=/bin/bash
+    CPATH="/cuda/include:$CPATH"
+    PATH="/cuda/bin:/nvidia:$PATH"
+    LD_LIBRARY_PATH="/cuda/lib64:/nvidia:$LD_LIBRARY_PATH"
+    CUDA_HOME="/cuda"
+    export PATH LD_LIBRARY_PATH CPATH CUDA_HOME
+
+%post
+    # default mount points
+    mkdir -p /scratch/global /scratch/local /rcc/stor1/refdata /rcc/stor1/projects /rcc/stor1/depts
+    touch /usr/bin/nvidia-smi
+
+    # Install necessary packages
+    apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        gcc-multilib \
+        libatlas-base-dev \
+        libboost-all-dev \
+        libhdf5-serial-dev \
+        libprotobuf-dev \
+        protobuf-compiler \
+        libopenblas-dev \
+        liblapack-dev \
+        gfortran \
+        libcurl4-openssl-dev \
+        python-pip \
+        python3-pip \
+        pkg-config \
+        python-dev \
+        python3-dev \
+        python-setuptools \
+        python3-setuptools
+    apt-get clean
+
+    # Update pip
+    pip install --no-cache-dir --upgrade pip==9.0.3
+    pip3 install --no-cache-dir --upgrade pip==9.0.3
+
+    # Install TensorFlow-GPU
+    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-rc0-cp27-none-linux_x86_64.whl
+    pip install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
+
+    # Install python packages
+    pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib ipykernel jupyter
+
+    # Install TensorFlow-GPU
+    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-rc0-cp35-cp35m-linux_x86_64.whl
+    pip3 install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
+
+    # Install python packages
+    pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib ipykernel jupyter
+
+    # Install caffe
+    wget https://github.com/NVIDIA/caffe/archive/v0.17.0.tar.gz
+    tar -xvf v0.17.0.tar.gz
+    cd /caffe-0.17.0
+    pip install ipython==5.4.1
+    pip install -r python/requirements.txt
+    mkdir build
+    cd build
+    cmake .. -DUSE_CUDNN=ON 
+    make
+    make install
+    make pycaffe
+    cd /
+
+    # Install DIGITS
+    wget https://github.com/NVIDIA/DIGITS/archive/v6.1.1.tar.gz
+    tar -xvf v6.1.1.tar.gz
+    cd DIGITS-6.1.1 && pip install -r requirements.txt && pip install .
+
