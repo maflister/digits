@@ -3,10 +3,10 @@ From: ubuntu:16.04
 
 %labels
 Maintainer Matthew Flister
-Version v18.03
+Version v1.0
 
 %help
-This container runs Tensorflow-GPU.
+This container runs DIGITS server.
 
 %environment
     # nvidia driver libs specific cuda version libs are mounted by --bind command at run
@@ -45,6 +45,13 @@ This container runs Tensorflow-GPU.
         python-setuptools \
         python3-setuptools \
         wget \
+        libopencv-dev \
+        python-opencv \
+        libhdf5-serial-dev \
+        libgflags-dev \
+        libgoogle-glog-dev \
+        libleveldb-dev \
+        liblmdb-dev \
         cmake
     apt-get clean
 
@@ -53,14 +60,14 @@ This container runs Tensorflow-GPU.
     pip3 install --no-cache-dir --upgrade pip==9.0.3
 
     # Install TensorFlow-GPU
-    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.7.0-cp27-none-linux_x86_64.whl
+    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-cp27-none-linux_x86_64.whl
     pip install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
     pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
 
     # Install TensorFlow-GPU
-    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.7.0-cp35-cp35m-linux_x86_64.whl
+    export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-cp35-cp35m-linux_x86_64.whl
     pip3 install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
@@ -74,14 +81,15 @@ This container runs Tensorflow-GPU.
     pip install -r python/requirements.txt
     mkdir build
     cd build
-    cmake .. -DUSE_CUDNN=ON 
+    cmake .. -DUSE_CUDNN=ON
     make
     make install
     make pycaffe
     cd /
 
     # Install DIGITS
-    wget https://github.com/NVIDIA/DIGITS/archive/v6.1.1.tar.gz
-    tar -xvf v6.1.1.tar.gz
-    cd DIGITS-6.1.1 && pip install -r requirements.txt && pip install .
+    #wget https://github.com/NVIDIA/DIGITS/archive/v6.1.1.tar.gz
+    pip install https://github.com/NVIDIA/DIGITS/archive/v6.1.1.tar.gz
+    #tar -xvf v6.1.1.tar.gz
+    #cd DIGITS-6.1.1 && pip install -r requirements.txt && pip install .
 
