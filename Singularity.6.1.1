@@ -16,7 +16,9 @@ This container runs DIGITS server.
     PATH="/cuda/bin:/nvidia:$PATH"
     LD_LIBRARY_PATH="/cuda/lib64:/nvidia:$LD_LIBRARY_PATH"
     CUDA_HOME="/cuda"
-    export PATH LD_LIBRARY_PATH CPATH CUDA_HOME
+    CAFFE_ROOT="/caffe"
+    DIGITS_JOBS_DIR="/scratch/global/$USER/$PBS_JOBID"
+    export PATH LD_LIBRARY_PATH CPATH CUDA_HOME CAFFE_ROOT DIGITS_JOBS_DIR
 
 %post
     # default mount points
@@ -44,8 +46,6 @@ This container runs DIGITS server.
         python3-dev \
         python-setuptools \
         python3-setuptools \
-        wget \
-        git \
         libopencv-dev \
         python-opencv \
         libhdf5-serial-dev \
@@ -53,6 +53,8 @@ This container runs DIGITS server.
         libgoogle-glog-dev \
         libleveldb-dev \
         liblmdb-dev \
+        wget \
+        git \
         cmake
     apt-get clean
 
@@ -65,14 +67,14 @@ This container runs DIGITS server.
     pip install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
-    pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
+    pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib tkinter
 
     # Install TensorFlow-GPU
     export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-cp35-cp35m-linux_x86_64.whl
     pip3 install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
-    pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
+    pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib tkinter
 
     # Install caffe
     mkdir /caffe
