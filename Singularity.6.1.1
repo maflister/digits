@@ -45,6 +45,7 @@ This container runs DIGITS server.
         python-setuptools \
         python3-setuptools \
         wget \
+        git \
         libopencv-dev \
         python-opencv \
         libhdf5-serial-dev \
@@ -74,9 +75,9 @@ This container runs DIGITS server.
     pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
 
     # Install caffe
-    wget https://github.com/NVIDIA/caffe/archive/v0.17.0.tar.gz
-    tar -xvf v0.17.0.tar.gz
-    cd /caffe-0.17.0
+    mkdir /caffe
+    git clone https://github.com/nvidia/caffe.git /caffe -b 'caffe-0.15'
+    cd /caffe
     pip install ipython==5.4.1
     pip install -r python/requirements.txt
     mkdir build
