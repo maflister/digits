@@ -21,7 +21,7 @@ This container runs DIGITS server.
     export PATH LD_LIBRARY_PATH CPATH CUDA_HOME CAFFE_ROOT DIGITS_JOBS_DIR
 
 %files
-    Makefile.config /caffe
+    Makefile.config /root
 
 %post
     # default mount points
@@ -83,8 +83,10 @@ This container runs DIGITS server.
     pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
 
     # Install caffe
+    mkdir /caffe
     git clone https://github.com/nvidia/caffe.git /caffe -b 'caffe-0.15'
     cd /caffe
+    cp /root/Makefile.config .
     pip install ipython==5.4.1
     pip install -r python/requirements.txt
     mkdir build
