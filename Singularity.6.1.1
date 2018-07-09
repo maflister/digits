@@ -46,6 +46,8 @@ This container runs DIGITS server.
         python3-dev \
         python-setuptools \
         python3-setuptools \
+        python-tk \
+        python3-tk \
         libopencv-dev \
         python-opencv \
         libhdf5-serial-dev \
@@ -67,14 +69,14 @@ This container runs DIGITS server.
     pip install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
-    pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib tkinter
+    pip install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
 
     # Install TensorFlow-GPU
     export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-cp35-cp35m-linux_x86_64.whl
     pip3 install --no-cache-dir --ignore-installed --upgrade $TF_BINARY_URL
 
     # Install python packages
-    pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib tkinter
+    pip3 install --upgrade keras tflearn numpy nibabel h5py scikit-learn pandas scipy matplotlib
 
     # Install caffe
     mkdir /caffe
